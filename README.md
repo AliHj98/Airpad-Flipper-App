@@ -1,7 +1,5 @@
-# Flashlight Plugin for Flipper Zero
+## Gyro gaming pad or mouse for Flipper Zero
 
-Simple Flashlight special for @Svaarich by @xMasterX
+This app uses an ESP32 and an MPU6050 sensor to emulate a gyroscopic controller to a windows device
 
-Enables 3.3v on pin 7/C3 and leaves it on when you exit app
 
-**Connect LED to (+ -> 7/C3) | (GND -> GND)**
