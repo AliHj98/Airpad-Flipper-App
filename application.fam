@@ -1,0 +1,13 @@
+App(
+    appid="airmouseesp32",
+    name="AirMouse[ESP32]",
+    apptype=FlipperAppType.EXTERNAL,
+    entry_point="airmouseesp32_app",
+    stack_size=2 * 1024,
+    fap_icon="icon.png",
+    fap_category="GPIO",
+    fap_author="Alihj98",
+    fap_weburl="https://github.com/xMasterX/flipper-flashlight",
+    fap_version=(1, 1),
+    fap_description="Enables 3.3v on pin 7/C3 when you press Ok and leaves it on when you exit app",
+)
