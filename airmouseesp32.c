@@ -95,7 +95,16 @@ static void set_left_click_state(PluginState* const plugin_state, bool state) {
     furi_mutex_release(plugin_state->mutex);
 }
 
-int32_t airmouseesp32_app() {
+int32_t airmouseesp32_app(void* p) {
+    UNUSED(p);
+
+    uint8_t attempts = 0;
+    while(!furi_hal_power_is_otg_enabled() && attempts++ < 5) {
+        furi_hal_power_enable_otg();
+        furi_delay_ms(10);
+    }
+    furi_delay_ms(200);
+
     FuriMessageQueue* event_queue = furi_message_queue_alloc(8, sizeof(PluginEvent));
 
     PluginState* plugin_state = malloc(sizeof(PluginState));
@@ -120,7 +129,7 @@ int32_t airmouseesp32_app() {
         FuriStatus event_status = furi_message_queue_get(event_queue, &event, 100);
 
         furi_mutex_acquire(plugin_state->mutex, FuriWaitForever);
-
+        
         if (event_status == FuriStatusOk) {
             if (event.type == EventTypeKey) {
                 if (event.input.type == InputTypePress) {
@@ -153,13 +162,17 @@ int32_t airmouseesp32_app() {
                         break;
                     }
                 }
+            
             }
         }
 
         furi_mutex_release(plugin_state->mutex);
         view_port_update(view_port);
     }
-
+    if(furi_hal_power_is_otg_enabled()) {
+            furi_hal_power_disable_otg();
+                }
+                
     view_port_enabled_set(view_port, false);
     gui_remove_view_port(gui, view_port);
     furi_record_close(RECORD_GUI);
